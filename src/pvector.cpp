@@ -155,3 +155,17 @@ void PVector::setMag(const double len) {
 	this->normalize();
 	this->mult(len);
 }
+
+// Rotate 
+void PVector::rotate2D(double angle) {
+	angle *= (M_PI/180);
+
+	double tempX = this->x;
+	this->setX(this->x * cos(angle) - this->y * sin(angle));
+	this->setY(tempX * sin(angle) + this->y * cos(angle));
+}
+
+// Heading
+double PVector::heading2D() {
+	return atan(this->y/this->x);
+}

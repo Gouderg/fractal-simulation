@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cmath>
+#include <iostream>
 
 class PVector {
 
@@ -51,6 +52,12 @@ class PVector {
 
 		// Set Magnitude
 		void setMag(const double len);
+
+		// Rotate a vector with specified angle
+		void rotate2D(double angle);
+
+		// Calcule the angle of rotation for a vector
+		double heading2D();
 
 		// Setter
 		void set(const double x, const double y, const double z);
