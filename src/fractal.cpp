@@ -4,6 +4,8 @@
 Fractal::Fractal(int id) {
 	
 	this->id = id;
+	this->nbIteration = 1;
+
 	switch(id) {
 		case 1:
 		break;

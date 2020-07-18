@@ -7,10 +7,10 @@ KochLine::KochLine(PVector a, PVector b) {
 
 void KochLine::display(sf::RenderWindow *window) {
 	sf::Vertex line[] =  {
-		sf::Vertex(sf::Vector2f(start.getX(), start.getY())),
-		sf::Vertex(sf::Vector2f(end.getX(), end.getY())),
+		sf::Vertex(sf::Vector2f(start.getX(), start.getY()), sf::Color(255,255,0)),
+		sf::Vertex(sf::Vector2f(end.getX(), end.getY()), sf::Color(237,2,245)),
 	};
-	window->draw(line,2,sf::Lines);
+	window->draw(line, 2, sf::Lines);
 }
 
 void KochLine::generate(vector<KochLine> &lines) {
@@ -23,7 +23,6 @@ void KochLine::generate(vector<KochLine> &lines) {
 		PVector c(elt.kochC());
 		PVector d(elt.kochD());
 		PVector e(elt.kochE());
-
 
 		next.push_back(KochLine(a,b));
 		next.push_back(KochLine(b,c));
