@@ -12,7 +12,7 @@ fractal.o: src/fractal.cpp include/fractal.h
 
 kochline.o: src/kochline.cpp include/kochline.h
 	g++ -Wall -std=c++11 -c $<
-	
+
 clean:
 	rm *.o fractal
 

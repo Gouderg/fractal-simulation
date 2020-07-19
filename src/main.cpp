@@ -7,9 +7,6 @@
 #include "../include/fractal.h"
 #include "../include/kochline.h"
 
-#define WIDTH 800
-#define HEIGHT 700
-
 using namespace std;
 
 int main(int argc, char const *argv[]) {
@@ -42,43 +39,41 @@ int main(int argc, char const *argv[]) {
 	
 
 	Fractal fractal(id);
-	double zoom = 1;
+	int zoom = 2;
 	// Initialisation de l'antialiasing et de la fenêtre
 	sf::ContextSettings settings;
 	sf::View view;
 	settings.antialiasingLevel = 8;
-	sf::RenderWindow window(sf::VideoMode(WIDTH,HEIGHT), "Fractal", sf::Style::Default, settings);
+	sf::RenderWindow window(sf::VideoMode(fractal.WIDTH, fractal.HEIGHT), "Fractal", sf::Style::Default, settings);
 	window.setFramerateLimit(2);
 
 	while (window.isOpen()) {
 		sf::Event event;
 		while (window.pollEvent(event)) {							// Attente d'évènement
 			if(event.type == sf::Event::Closed) window.close();		// Fermeture de la fenetre
+
+			if (event.type == sf::Event::MouseButtonPressed) {
+				window.clear(sf::Color(25,25,100,80));
+				view = window.getDefaultView();
+				view.setCenter(sf::Vector2f(event.mouseButton.x, event.mouseButton.y));
+				if (event.mouseButton.button == sf::Mouse::Left) view.setSize(sf::Vector2f(zoom, zoom));
+				window.setView(view);
+				fractal.display(&window);
+			}
+
 		}
 		
+		// Empêche la récursion d'aller trop loin
 		if (fractal.getIteration() < 10) {
-			// On nettoie notre écran
 			window.clear(sf::Color(25,25,100,80));
 			fractal.generate();
-			fractal.display(&window);			
-		}
-
-		if (fractal.getIteration() >= 11) {
-			window.setFramerateLimit(60);
-			window.clear(sf::Color(25,25,100,80));
-			view = window.getDefaultView();
-			view.setCenter(sf::Vector2f(400.f, 100.f));
-			view.setSize(sf::Vector2f(zoom, zoom));
-			window.setView(view);
 			fractal.display(&window);
-			zoom += 0.1;
 		}
-
-
-
 		window.display();
 		fractal.setIteration(fractal.getIteration() + 1);
+
 	}
-	
 	return 0;
 }
+
+
