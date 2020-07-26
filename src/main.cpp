@@ -9,37 +9,15 @@
 
 using namespace std;
 
+void initChoice(int &id, int &option);
+
 int main(int argc, char const *argv[]) {
 
-	int id = 0;
-	bool isCheck = true;
-	do {
-		cout << "----------------------------------------- \n";
-		cout << "- 1. Circle Fractal                     - \n";
-		cout << "- 2. Koch Curve                         - \n";
-		cout << "- 3. Trees                              - \n";
-		cout << "- 4. Mandelbrot                         - \n";
-		cout << "- 5. Fatou                              - \n";
-		cout << "- 6. Julia                              - \n";
-		cout << "----------------------------------------- \n\n";
+	int id = 0, option = 0;
+	initChoice(id, option);
 
-		cout << "Veuillez choisir un fractal: ";
-		cin >> id;
-
-		// Empêche le programme de planter
-		if (cin.fail()) {
-			cin.clear();
-			cin.ignore(numeric_limits<streamsize>::max(), '\n');
-		}
-
-		if (id >= 1 && id <= 6) isCheck = false;
-	
-	} while (isCheck);
-
-	
-
-	Fractal fractal(id);
-	int zoom = 2;
+	Fractal fractal(id, option);
+	int zoom = 100;
 	// Initialisation de l'antialiasing et de la fenêtre
 	sf::ContextSettings settings;
 	sf::View view;
@@ -64,7 +42,12 @@ int main(int argc, char const *argv[]) {
 		}
 		
 		// Empêche la récursion d'aller trop loin
-		if (fractal.getIteration() < 10) {
+		if (fractal.getIteration() < 10 && fractal.getId() == 2) {
+			window.clear(sf::Color(25,25,100,80));
+			fractal.generate();
+			fractal.display(&window);
+
+		} else if (fractal.getIteration() < 2) {
 			window.clear(sf::Color(25,25,100,80));
 			fractal.generate();
 			fractal.display(&window);
@@ -73,7 +56,54 @@ int main(int argc, char const *argv[]) {
 		fractal.setIteration(fractal.getIteration() + 1);
 
 	}
+
 	return 0;
 }
 
 
+void initChoice(int &id, int &option) {
+
+	bool isCheck = true;
+	do {
+		cout << "----------------------------------------- \n";
+		cout << "- 1. Circle Fractal                     - \n";
+		cout << "- 2. Koch Curve                         - \n";
+		cout << "- 3. Mandelbrot                         - \n";
+		cout << "----------------------------------------- \n\n";
+
+		cout << "Veuillez choisir un fractal: ";
+		cin >> id;
+
+		// Empêche le programme de planter
+		if (cin.fail()) {
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		}
+
+		if (id >= 1 && id <= 3) isCheck = false;
+	
+	} while (isCheck);	
+	
+	if (id == 3) {
+		isCheck = true;
+		do {
+			cout << "----------------------------------------- \n";
+			cout << "- 1. Normal                             - \n";
+			cout << "- 2. Zoom                               - \n";
+			cout << "- 3. Julia pour un paramère fixé        - \n";
+			cout << "----------------------------------------- \n\n";
+
+			cout << "Veuillez un des modèles de MandelBrot: ";
+			cin >> option;
+
+			// Empêche le programme de planter
+			if (cin.fail()) {
+				cin.clear();
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			}
+
+			if (option >= 1 && option <= 3) isCheck = false;
+		
+		} while (isCheck);
+	}
+}
